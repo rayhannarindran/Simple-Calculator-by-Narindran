@@ -93,7 +93,8 @@ int main(){
         }
     }
 
-//Prioritas Perhitungan
+/*
+//Prioritas Perhitungan//Masih Salah//
     int digke = -1;
     for (int i = 0; i < len_op; i++){
         if (operator[i] == '0'){
@@ -113,7 +114,7 @@ int main(){
             }
         }
     printf("%d\n", digke);
-
+*/
 
 // PRINTING ANGKA, OPERATOR, KURUNG (For Testing)
     printf("\n");
