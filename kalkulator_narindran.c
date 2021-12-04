@@ -13,8 +13,8 @@ int isOperator(char c)
 
 int validateSpacing(char *str)
 {
-    int i = 0;
-    while(str[i])
+    int i;
+    for(i = 0; str[i] != 0; i++)
     {
         if(str[i] == ' ')
         {
@@ -26,7 +26,7 @@ int validateSpacing(char *str)
             else if( isdigit(str[i - 1]) && str[i - 1] == ')' ) continue;
             else
             {
-                printf("Invalid Format");
+                printf("Invalid Format1");
                 return 0;
             }
         }
@@ -34,21 +34,26 @@ int validateSpacing(char *str)
         {
             if( (str[i + 1] != ' ' || isdigit(str[i + 1])) && (str[i - 1] != ' ' || isdigit(str[i - 1])) )
             {
-                printf("Invalid Format");
+                printf("Invalid Format2");
                 return 0;
             }
         }
         if(isOperator(str[i]))
         {
-            if( str[i + 1] != ' ' || str[i - 1] == ' ')
+            if(str[i + 1] != ' ' || str[i - 1] != ' ')
             {
-                printf("Invalid Format");
+                printf("Invalid Format3");
                 return 0;
             }
         }
-
-        i++;
     }
+    
+    if(isOperator(str[i]))
+    {
+        printf("Invalid Format3");
+        return 0;
+    }
+    
     return 1;
 }
 
