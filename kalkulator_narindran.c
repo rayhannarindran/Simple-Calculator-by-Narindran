@@ -4,6 +4,36 @@
 #include<ctype.h>
 #include<math.h>
 
+// CHECK IF GIVEN CHAR IS A VALID OPERATOR
+int isOperator(char c)
+{
+    if(c == '+' || c == '-' || c == '/' || c == '*' || c == '^') return 1;
+    else return 0;
+}
+
+int validateSpacing(char *str)
+{
+    int i = 0;
+    while(str[i])
+    {
+        if(str[i] == ' ')
+        {
+            if( isdigit(str[i - 1]) && isOperator(str[i + 1]) ) continue;
+            else if( isdigit(str[i + 1]) && isOperator(str[i - 1]) ) continue;
+            else if( isOperator(str[i - 1]) && str[i + 1] == '(' ) continue;
+            else if( isdigit(str[i + 1]) && str[i - 1] == '(' ) continue;
+            else if( isOperator(str[i + 1]) && str[i + 1] == ')' ) continue;
+            else if( isdigit(str[i - 1]) && str[i - 1] == ')' ) continue;
+            else
+            {
+                printf("Invalid Spacing");
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
 char *remove_white_spaces(char *str)
 {
 	int i = 0, j = 0;
@@ -24,6 +54,8 @@ int main(){
     char operator[512];
 
     scanf("%[^\n]", str);
+
+    if( !validateSpacing ) return 0;
 
 //REMOVE WHITE-SPACE
     remove_white_spaces(str);
@@ -110,7 +142,6 @@ int main(){
                     i += j + 1;
                     break;
                 }
-
             }
         }
     printf("%d\n", digke);
