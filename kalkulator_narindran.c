@@ -77,6 +77,7 @@ char *remove_white_spaces(char *str)
 int main(){
     char str[256]; //input_string
     int angka[512]; //array_integer_angka
+    int angka_kurung[512]; //array_hasil_perhitungan_dalam_kurung
     char operator[512]; //array_char_operator
     char operator_cln[512]; //array_char_operator_bersih
     int angka_cln[512]; //array_integer_angka_bersih
@@ -170,6 +171,7 @@ int main(){
 
 // PENGHITUNGAN ANGKA DALAM KURUNG
     int digitke = -1;
+    int hasilke = 0;
     for (int i = 0; i < strlen(operator); i++){
         if (operator[i] == '0'){
            digitke++;
@@ -210,7 +212,7 @@ int main(){
                     for (int k = 0; k < strlen(op_k); k++){
                         if (op_k[k] == '^'){
                             if (ang_k[(k-1)/2] == 5){
-                                ang_k[(k-1)/2] = pow(ang_k[(k-1)/2], ang_k[(k+1)/2]) + 1;
+                                ang_k[(k-1)/2] = pow(ang_k[(k-1)/2], ang_k[(k+1)/2]);
                             }
                             else{
                                 ang_k[(k-1)/2] = pow(ang_k[(k-1)/2], ang_k[(k+1)/2]);
@@ -311,7 +313,8 @@ int main(){
                         }                       
                     } 
 
-                    printf("%d\n", ang_k[0]);
+                    angka_kurung[hasilke] = ang_k[0];
+                    hasilke++;
 
                     memset(ang_k, 0, 32);
                     memset(op_k, '\0', 32);
@@ -347,21 +350,57 @@ int main(){
 //----------------------------------------------------------------
 
 // ARRAY ANGKA BARU (TANPA BRACKETS)
-
+    int count = 0;
+    int kurung = 0;
+    int not_kurung = 0;
+    for (int i = 0; i < strlen(operator); i++){
+        if (operator[i] == '0'){
+            angka_cln[count] = angka[not_kurung];
+            count++;
+            not_kurung++;
+        }
+        if (operator[i] == '('){
+            int nol = 0;
+            for (int j = i; j < strlen(operator); j++){     
+                if (operator[j] == '0'){
+                    nol++;
+                }
+                if (operator[j] == ')'){
+                    angka_cln[count] = angka_kurung[kurung];
+                    count++;
+                    kurung++;
+                    not_kurung += nol;
+                    i = j;
+                    break;
+                }
+            }
+        }
+    }
 //---------------------------------------------------------------
 
+//Banyak Digit di Array Baru
+    int new_len_dig = (strlen(operator_cln) + 1)/2;
+//--------------------------------------------------------------
+
+//ANGKA_CLEANUP 2
+    int angka_cln2[512];
+    for (int i = 0; i < new_len_dig; i++)
+    {
+        angka_cln2[i] = angka_cln[i];
+    }
+//---------------------------------------------
+
+//PERHITUNGAN AKHIR
+    //TOLONG//
+//------------------------------------------------------------------------
+
 // PRINTING ANGKA, OPERATOR, KURUNG (For Testing)
-    printf("\nBanyak digit: %d", len_dig);
     printf("\n%s", str);
-    printf("\n%s", operator);
     printf("\n%s", operator_cln);
     printf("\n");
-
-    for (int i = 0; i < len_dig; i++)
-    {
-        printf("%d ", angka_cln[i]);
+    for (int i = 0; i < new_len_dig; i++){
+        printf("%d ", angka_cln2[i]);
     }
-
 //---------------------------------------------
 
 }
