@@ -22,8 +22,8 @@ int validateSpacing(char *str)
             else if( isdigit(str[i + 1]) && isOperator(str[i - 1]) ) continue;
             else if( isOperator(str[i - 1]) && str[i + 1] == '(' ) continue;
             else if( isdigit(str[i + 1]) && str[i - 1] == '(' ) continue;
-            else if( isOperator(str[i + 1]) && str[i + 1] == ')' ) continue;
-            else if( isdigit(str[i - 1]) && str[i - 1] == ')' ) continue;
+            else if( isOperator(str[i + 1]) && str[i - 1] == ')' ) continue;
+            else if( isdigit(str[i - 1]) && str[i + 1] == ')' ) continue;
             else
             {
                 printf("Invalid Format1");
@@ -32,7 +32,7 @@ int validateSpacing(char *str)
         }
         if(isdigit(str[i]))
         {
-            if( (str[i + 1] != ' ' || isdigit(str[i + 1])) && (str[i - 1] != ' ' || isdigit(str[i - 1])) )
+            if( !(str[i + 1] == ' ' || isdigit(str[i + 1])) && !(str[i - 1] == ' ' || isdigit(str[i - 1])) )
             {
                 printf("Invalid Format2");
                 return 0;
