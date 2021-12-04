@@ -73,7 +73,7 @@ int main(){
 
     scanf("%[^\n]", str);
 
-    if( !validateSpacing ) return 0;
+    if( !validateSpacing(str) ) return 0;
 
 //REMOVE WHITE-SPACE
     remove_white_spaces(str);
