@@ -56,7 +56,9 @@ int validateSpacing(char *str)
     
     return 1;
 }
+//--------------------------------------------------------
 
+//MENGHAPUS SPASI
 char *remove_white_spaces(char *str)
 {
 	int i = 0, j = 0;
@@ -70,19 +72,26 @@ char *remove_white_spaces(char *str)
 	str[j] = '\0';
 	return str;
 }
+//----------------------------------------
 
 int main(){
-    char str[256];
-    int angka[512];
-    char operator[512];
+    char str[256]; //input_string
+    int angka[512]; //array_integer_angka
+    char operator[512]; //array_char_operator
+    char operator_cln[512]; //array_char_operator_bersih
+    int angka_cln[512]; //array_integer_angka_bersih
 
+//USER INPUT ARRAY
     scanf("%[^\n]", str);
+//-------------------------
 
+//CHECK VALIDITAS
     if( !validateSpacing(str) ) return 0;
+//------------------------------------------
 
 //REMOVE WHITE-SPACE
     remove_white_spaces(str);
-//-----------------------------
+//---------------------------
 
 //DIVIDER ANGKA
     char *ptr = str;
@@ -96,7 +105,7 @@ int main(){
             ptr++;
         }
     }
-//----------------------------------------------------
+//-----------------------------------------------
 
 //DIVIDER OPERATOR
     int j = 1;
@@ -108,7 +117,7 @@ int main(){
             j += 2;
         }
     }
-//----------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------
 
 // OPERATOR CLEANUP
     int len_op = strlen(operator);
@@ -139,6 +148,7 @@ int main(){
             break;
         }
     }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //DIGIT COUNTING - MELIHAT BANYAK DIGIT DI PERHITUNGAN
     int len_dig = 0;
@@ -147,41 +157,211 @@ int main(){
             len_dig++;
         }
     }
+//---------------------------------------
 
-/*
-//Prioritas Perhitungan//Masih Salah//
-    int digke = -1;
-    for (int i = 0; i < len_op; i++){
+// CLEANING ARRAY ANGKA - HAPUS JEJAK MEMORI
+    j = 0;
+    for (int i = 0; i < len_dig; i++)
+    {
+        angka_cln[j] = angka[i];
+        j++;
+    }
+//--------------------------------------
+
+// PENGHITUNGAN ANGKA DALAM KURUNG
+    int digitke = -1;
+    for (int i = 0; i < strlen(operator); i++){
         if (operator[i] == '0'){
-            digke += 1;
+           digitke++;
         }
-        else if (operator[i] == '(');
-            for (int j = i; j < len_op; j++){
+        if (operator[i] == '('){
+            int digit_awal = digitke;
+            int pang[32];
+            int k = 0;
+            for (int j = i; j < strlen(operator); j++){
                 if (operator[j] == '0'){
-                    digke += 1;
+                    digitke++;
+                    pang[k] = digitke;
+                    k++;
                 }
                 else if (operator[j] == ')'){
-                    printf("%d\n", digke-1);
-                    i += j + 1;
-                    break;
+                    int ang_k[1024];
+                    char op_k[1024];
+
+                    for (k = 0; k < digitke - digit_awal; k++){
+                        ang_k[k] = angka_cln[pang[k]];
+                    }
+
+                    int pop = 0;
+                    for (k = i + 1; k < j; k++){
+                       op_k[pop] = operator[k];
+                       pop++;
+                    }
+
+                    int len_op_k = strlen(op_k);
+
+                    int lendig_k = 0;
+                    for (k = 0; k < strlen(op_k); k++){
+                        if (op_k[k] == '0'){
+                            lendig_k++;
+                        }
+                    }
+
+                    for (int k = 0; k < strlen(op_k); k++){
+                        if (op_k[k] == '^'){
+                            if (ang_k[(k-1)/2] == 5){
+                                ang_k[(k-1)/2] = pow(ang_k[(k-1)/2], ang_k[(k+1)/2]) + 1;
+                            }
+                            else{
+                                ang_k[(k-1)/2] = pow(ang_k[(k-1)/2], ang_k[(k+1)/2]);
+                            }
+                            
+                            for (int l = (k+1)/2; l < lendig_k; l++){
+                                ang_k[l] = ang_k[l+1];
+                            }
+                            lendig_k--;
+
+                            for (int l = k; l < strlen(op_k) - 2 ; l++){
+                                op_k[l] = op_k[l+2];
+                            }
+
+                            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                                op_k[l] = '\0';
+                            }
+                            len_op_k = strlen(op_k);
+                            
+                        }
+                    }
+                    
+                    for (int k = 0; k < strlen(op_k); k++){
+                        if (op_k[k] == '/'){
+                            ang_k[(k-1)/2] = ang_k[(k-1)/2] / ang_k[(k+1)/2];
+                            
+                            for (int l = (k+1)/2; l < lendig_k; l++){
+                                ang_k[l] = ang_k[l+1];
+                            }
+                            lendig_k--;
+
+                            for (int l = k; l < strlen(op_k) - 2 ; l++){
+                                op_k[l] = op_k[l+2];
+                            }
+
+                            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                                op_k[l] = '\0';
+                            }
+                            len_op_k = strlen(op_k);
+                            
+                        }
+                        if (op_k[k] == '*'){
+                            ang_k[(k-1)/2] = ang_k[(k-1)/2] * ang_k[(k+1)/2];
+                            
+                            for (int l = (k+1)/2; l < lendig_k; l++){
+                                ang_k[l] = ang_k[l+1];
+                            }
+                            lendig_k--;
+
+                            for (int l = k; l < strlen(op_k) - 2 ; l++){
+                                op_k[l] = op_k[l+2];
+                            }
+
+                            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                                op_k[l] = '\0';
+                            }
+                            len_op_k = strlen(op_k);
+                            
+                        }                       
+                    }                                    
+
+                    for (int k = 0; k < strlen(op_k); k++){
+                        if (op_k[k] == '+'){
+                            ang_k[(k-1)/2] = ang_k[(k-1)/2] + ang_k[(k+1)/2];
+                            
+                            for (int l = (k+1)/2; l < lendig_k; l++){
+                                ang_k[l] = ang_k[l+1];
+                            }
+                            lendig_k--;
+
+                            for (int l = k; l < strlen(op_k) - 2 ; l++){
+                                op_k[l] = op_k[l+2];
+                            }
+
+                            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                                op_k[l] = '\0';
+                            }
+                            len_op_k = strlen(op_k);
+                            
+                        }
+                        if (op_k[k] == '-'){
+                            ang_k[(k-1)/2] = ang_k[(k-1)/2] - ang_k[(k+1)/2];
+                            
+                            for (int l = (k+1)/2; l < lendig_k; l++){
+                                ang_k[l] = ang_k[l+1];
+                            }
+                            lendig_k--;
+
+                            for (int l = k; l < strlen(op_k) - 2 ; l++){
+                                op_k[l] = op_k[l+2];
+                            }
+
+                            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                                op_k[l] = '\0';
+                            }
+                            len_op_k = strlen(op_k);
+                            
+                        }                       
+                    } 
+
+                    printf("%d\n", ang_k[0]);
+
+                    memset(ang_k, 0, 32);
+                    memset(op_k, '\0', 32);
+                    i = j;
+                    break; 
                 }
             }
         }
-    printf("%d\n", digke);
-*/
+        
+    }
+//---------------------------------------------------------------
+
+// CLEAN-UP OPERATOR AFTER BRACKETS
+    strcpy(operator_cln, operator);
+    for (int i = 0; i < strlen(operator_cln); i++){
+        if (operator_cln[i] == '('){
+            operator_cln[i] = '0';
+            int count = 0;
+            for (int j = i+1; j < strlen(operator_cln); j++){
+                if (operator_cln[j] == ')'){
+                    count++;
+                    break;
+                }
+                else{
+                    count++;
+                }
+            }
+            for (int j = i+1; j < strlen(operator_cln); j++){
+                operator_cln[j] = operator_cln[j + count];
+            }
+        }
+    }
+//----------------------------------------------------------------
+
+// ARRAY ANGKA BARU (TANPA BRACKETS)
+
+//---------------------------------------------------------------
 
 // PRINTING ANGKA, OPERATOR, KURUNG (For Testing)
-    printf("\n");
-    printf("%s", str);
-    printf("\n");
-    printf("%s", operator);
-    printf("\n");
-    //printf("\npanjang operasi dengan operator: %d\n", len_op);
-
-    for (int i = 0; i < len_dig; i++){
-        printf("%d ", angka[i]);
-    }
     printf("\nBanyak digit: %d", len_dig);
+    printf("\n%s", str);
+    printf("\n%s", operator);
+    printf("\n%s", operator_cln);
+    printf("\n");
+
+    for (int i = 0; i < len_dig; i++)
+    {
+        printf("%d ", angka_cln[i]);
+    }
+
 //---------------------------------------------
 
 }
