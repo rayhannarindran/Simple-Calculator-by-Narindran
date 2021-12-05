@@ -231,7 +231,7 @@ int main(){
                                 op_k[l] = '\0';
                             }
                             len_op_k = strlen(op_k);
-                            
+                            k -= 1;
                         }
                     }
                     
@@ -252,7 +252,7 @@ int main(){
                                 op_k[l] = '\0';
                             }
                             len_op_k = strlen(op_k);
-                            
+                            k -= 1;
                         }
                         if (op_k[k] == '*'){
                             ang_k[(k-1)/2] = ang_k[(k-1)/2] * ang_k[(k+1)/2];
@@ -270,7 +270,7 @@ int main(){
                                 op_k[l] = '\0';
                             }
                             len_op_k = strlen(op_k);
-                            
+                            k -= 1;
                         }                       
                     }                                    
 
@@ -291,7 +291,7 @@ int main(){
                                 op_k[l] = '\0';
                             }
                             len_op_k = strlen(op_k);
-                            
+                            k -= 1;
                         }
                         if (op_k[k] == '-'){
                             ang_k[(k-1)/2] = ang_k[(k-1)/2] - ang_k[(k+1)/2];
@@ -309,7 +309,7 @@ int main(){
                                 op_k[l] = '\0';
                             }
                             len_op_k = strlen(op_k);
-                            
+                            k -= 1;
                         }                       
                     } 
 
@@ -391,16 +391,116 @@ int main(){
 //---------------------------------------------
 
 //PERHITUNGAN AKHIR
-    //TOLONG//
+    int lendig_k = (strlen(operator_cln)/2) + 1;
+    int len_op_k = strlen(operator_cln);
+
+    for (int k = 0; k < strlen(operator_cln); k++){
+        if (operator_cln[k] == '^'){
+            if (operator_cln[(k-1)/2] == 5){
+                angka_cln2[(k-1)/2] = pow(angka_cln2[(k-1)/2], angka_cln2[(k+1)/2]);
+            }
+            else{
+                angka_cln2[(k-1)/2] = pow(angka_cln2[(k-1)/2], angka_cln2[(k+1)/2]);
+            }
+            
+            for (int l = (k+1)/2; l < lendig_k; l++){
+                angka_cln2[l] = angka_cln2[l+1];
+            }
+            lendig_k--;
+
+            for (int l = k; l < strlen(operator_cln) - 2 ; l++){
+                operator_cln[l] = operator_cln[l+2];
+            }
+
+            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                operator_cln[l] = '\0';
+            }
+            len_op_k = strlen(operator_cln);
+            k -= 1;
+        }
+    }
+    
+    for (int k = 0; k < strlen(operator_cln); k++){
+        if (operator_cln[k] == '/'){
+            angka_cln2[(k-1)/2] = angka_cln2[(k-1)/2] / angka_cln2[(k+1)/2];
+            
+            for (int l = (k+1)/2; l < lendig_k; l++){
+                angka_cln2[l] = angka_cln2[l+1];
+            }
+            lendig_k--;
+
+            for (int l = k; l < strlen(operator_cln) - 2 ; l++){
+                operator_cln[l] = operator_cln[l+2];
+            }
+
+            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                operator_cln[l] = '\0';
+            }
+            len_op_k = strlen(operator_cln);
+            k -= 1;
+        }
+        if (operator_cln[k] == '*'){
+            angka_cln2[(k-1)/2] = angka_cln2[(k-1)/2] * angka_cln2[(k+1)/2];
+            
+            for (int l = (k+1)/2; l < lendig_k; l++){
+                angka_cln2[l] = angka_cln2[l+1];
+            }
+            lendig_k--;
+
+            for (int l = k; l < strlen(operator_cln) - 2 ; l++){
+                operator_cln[l] = operator_cln[l+2];
+            }
+
+            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                operator_cln[l] = '\0';
+            }
+            len_op_k = strlen(operator_cln);
+            k -= 1;
+        }                       
+    }                                    
+
+    for (int k = 0; k < strlen(operator_cln); k++){
+        if (operator_cln[k] == '+'){
+            angka_cln2[(k-1)/2] = angka_cln2[(k-1)/2] + angka_cln2[(k+1)/2];
+            
+            for (int l = (k+1)/2; l < lendig_k; l++){
+                angka_cln2[l] = angka_cln2[l+1];
+            }
+            lendig_k--;
+
+            for (int l = k; l < strlen(operator_cln) - 2 ; l++){
+                operator_cln[l] = operator_cln[l+2];
+            }
+
+            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                operator_cln[l] = '\0';
+            }
+            len_op_k = strlen(operator_cln);
+            k -= 1;
+        }
+        if (operator_cln[k] == '-'){
+            angka_cln2[(k-1)/2] = angka_cln2[(k-1)/2] - angka_cln2[(k+1)/2];
+            
+            for (int l = (k+1)/2; l < lendig_k; l++){
+                angka_cln2[l] = angka_cln2[l+1];
+            }
+            lendig_k--;
+
+            for (int l = k; l < strlen(operator_cln) - 2 ; l++){
+                operator_cln[l] = operator_cln[l+2];
+            }
+
+            for (int l = len_op_k - 1; l > len_op_k - 3; l--){
+                operator_cln[l] = '\0';
+            }
+            len_op_k = strlen(operator_cln);
+            k -= 1;
+        }                       
+    }    
 //------------------------------------------------------------------------
 
-// PRINTING ANGKA, OPERATOR, KURUNG (For Testing)
-    printf("\n%s", str);
-    printf("\n%s", operator_cln);
-    printf("\n");
-    for (int i = 0; i < new_len_dig; i++){
-        printf("%d ", angka_cln2[i]);
-    }
+// PRINTING HASIL
+    printf("Hasil:\n%d ", angka_cln2[0]);
 //---------------------------------------------
 
 }
